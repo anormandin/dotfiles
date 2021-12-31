@@ -1,4 +1,4 @@
-return require('packer').startup(function()
+return require('packer').startup(function(use)
     
   -- Packer can manage itself as an optional plugin
   use {'wbthomason/packer.nvim', opt = true}
@@ -6,6 +6,12 @@ return require('packer').startup(function()
   -- Color scheme
  -- use { 'sainnhe/gruvbox-material' }
   use 'folke/tokyonight.nvim'
+
+  -- Icons
+  use 'kyazdani42/nvim-web-devicons'
+
+  -- Status line
+  use 'nvim-lualine/lualine.nvim'
 
   -- Fuzzy finder
   use {

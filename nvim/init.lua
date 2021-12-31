@@ -1,4 +1,5 @@
 -- Map leader to space
+require'lualine'.get_config()
 vim.g.mapleader = ' '
 
 local fn = vim.fn
@@ -32,3 +33,4 @@ require('lsp_lua')
 require('config.colorscheme')
 require('config.completion')
 require('config.fugitive')
+require('config.lualine')
