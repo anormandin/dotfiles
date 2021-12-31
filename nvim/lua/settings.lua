@@ -5,6 +5,8 @@ local indent = 4
 
 cmd 'syntax enable'
 cmd 'filetype plugin indent on'
+cmd 'set mouse+=a'
+
 
 
 -- Buffers options

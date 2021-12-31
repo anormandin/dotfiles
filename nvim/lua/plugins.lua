@@ -22,6 +22,9 @@ return require('packer').startup(function(use)
         requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}}
     }
 
+    -- Buffer bar
+    -- use {'romgrk/barbar.nvim', }
+
     -- LSP and completion
     use { 'neovim/nvim-lspconfig' }
     use { 'nvim-lua/completion-nvim' }
@@ -33,8 +36,32 @@ return require('packer').startup(function(use)
     -- Vim dispatch
     use { 'tpope/vim-dispatch' }
 
+    -- Vim commentary
+    use { 'tpope/vim-commentary' }
+
+    -- Vim surround
+    use { 'tpope/vim-surround' }
+
     -- Fugitive for Git
     use { 'tpope/vim-fugitive' }
 
     use 'kdheepak/lazygit.nvim'
+    
+    
+   use {'kevinhwang91/nvim-bqf', ft = 'qf'}
+
+   use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
+
+   use { 
+       'jose-elias-alvarez/nvim-lsp-ts-utils',
+       branch = 'main'
+   }
+   use { 
+       'jose-elias-alvarez/null-ls.nvim',
+       branch = 'main'
+   }
+   use { 
+       'ray-x/lsp_signature.nvim'
+   }
+
 end)

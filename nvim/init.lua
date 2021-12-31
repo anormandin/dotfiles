@@ -8,7 +8,6 @@ local execute = vim.api.nvim_command
 -- Sensible defaults
 require('settings')
 
-
 -- Auto install packer.nvim if not exists
 local install_path = fn.stdpath('data')..'/site/pack/packer/opt/packer.nvim'
 if fn.empty(fn.glob(install_path)) > 0 then
@@ -35,3 +34,4 @@ require('config.completion')
 require('config.fugitive')
 require('config.lualine')
 require('config.nvimtree')
+require('config.barbar')
