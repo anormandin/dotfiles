@@ -26,9 +26,22 @@ return require('packer').startup(function(use)
     -- use {'romgrk/barbar.nvim', }
 
     -- LSP and completion
+    use 'williamboman/nvim-lsp-installer'
+    use "L3MON4D3/LuaSnip"
     use { 'neovim/nvim-lspconfig' }
     use { 'nvim-lua/completion-nvim' }
+    use "onsails/lspkind-nvim"
 
+    use "hrsh7th/nvim-cmp"
+    use "hrsh7th/cmp-cmdline"
+    use "hrsh7th/cmp-buffer"
+    use "hrsh7th/cmp-path"
+    use "hrsh7th/cmp-nvim-lua"
+    use "hrsh7th/cmp-nvim-lsp"
+    use "hrsh7th/cmp-nvim-lsp-document-symbol"
+    use "saadparwaiz1/cmp_luasnip"
+    use "tamago324/cmp-zsh"
+    --
     -- Lua development
     use { 'tjdevries/nlua.nvim' }
 
