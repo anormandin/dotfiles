@@ -74,6 +74,11 @@ _G.packer_plugins = {
     path = "/Users/alainnormandin/.local/share/nvim/site/pack/packer/start/Comment.nvim",
     url = "https://github.com/numToStr/Comment.nvim"
   },
+  ["FixCursorHold.nvim"] = {
+    loaded = true,
+    path = "/Users/alainnormandin/.local/share/nvim/site/pack/packer/start/FixCursorHold.nvim",
+    url = "https://github.com/antoinemadec/FixCursorHold.nvim"
+  },
   LuaSnip = {
     loaded = true,
     path = "/Users/alainnormandin/.local/share/nvim/site/pack/packer/start/LuaSnip",
@@ -123,6 +128,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/alainnormandin/.local/share/nvim/site/pack/packer/start/gitsigns.nvim",
     url = "https://github.com/lewis6991/gitsigns.nvim"
+  },
+  ["impatient.nvim"] = {
+    loaded = true,
+    path = "/Users/alainnormandin/.local/share/nvim/site/pack/packer/start/impatient.nvim",
+    url = "https://github.com/lewis6991/impatient.nvim"
   },
   ["lualine.nvim"] = {
     loaded = true,
@@ -213,6 +223,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/alainnormandin/.local/share/nvim/site/pack/packer/start/vim-bbye",
     url = "https://github.com/moll/vim-bbye"
+  },
+  ["which-key.nvim"] = {
+    loaded = true,
+    path = "/Users/alainnormandin/.local/share/nvim/site/pack/packer/start/which-key.nvim",
+    url = "https://github.com/folke/which-key.nvim"
   }
 }
 
