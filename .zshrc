@@ -5,149 +5,66 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# If you come from bash you might have to change your $PATH.  export PATH=$HOME/bin:/usr/local/bin:/usr/sbin:/usr/local/opt/python/libexec/bin:/Users/alainnormandin/Library/Python/3.7/bin:$PATH
-# Path to your oh-my-zsh installation.
-export ZSH=/Users/alainnormandin/.oh-my-zsh
+# zinit package manager initialisation
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
-# Set name of the theme to load. Optionally, if you set this to "random"
-# it'll load a random theme each time that oh-my-zsh is loaded.
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="powerlevel10k/powerlevel10k"
-
-# Set list of themes to load
-# Setting this variable when ZSH_THEME=random
-# cause zsh load theme from this variable instead of
-# looking in ~/.oh-my-zsh/themes/
-# An empty array have no effect
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="false"
-DISABLE_CORRECTION="true"
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-HIST_STAMPS="yyyy-mm-dd"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git docker colored-man-pages colorize brew osx zsh-syntax-highlighting zsh-autosuggestions)
-
-
-source $ZSH/oh-my-zsh.sh
-
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-export EDITOR='vim'
-else
-  export EDITOR='nvim'
+if [ ! -d "${ZINIT_HOME}" ]; then
+  mkdir -p "$(dirname "${ZINIT_HOME}")"
+  git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 fi
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+source "${ZINIT_HOME}/zinit.zsh"
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
+# PLUGINS
+# Prompt (Powerlevel10k)
+zinit ice depth=1; zinit light romkatv/powerlevel10k # prompt
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsho
+zinit light zsh-users/zsh-syntax-highlighting 
+zinit light zsh-users/zsh-completions 
+zinit light zsh-users/zsh-autosuggestions
+zinit light Aloxaf/fzf-tab
 
-alias vimconfig="nvim ~/.config/nvim/init.vim"
+# SNIPPETS
+zinit snippet OMZP::git
 
-function mkcd() { mkdir -p "$@" && cd "$_"; }
+# Load completions
+autoload -U compinit && compinit
 
-export PYTHONDONTWRITEBYTECODE=1
+# Keybindings
 
-DEFAULT_USER=`whoami`
+# Enable Emacs mode
+bindkey -e
+bindkey '^p' history-search-backward
+bindkey '^n' history-search-forward
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# History
+HISTSIZE=5000
+HISTFILE=~/.zsh_history
+SAVEHIST=$HISTSIZE
+HISTDUP=erase
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_dups
+setopt hist_ignore_space
+setopt hist_find_no_dups
 
-export PATH=$PATH:~/bin
-export PATH="$PATH:$HOME/.dotnet/tools"
-export PATH="$PATH:$HOME/.local/bin"
-export GOPATH=~/go/bin
-export PATH="$PATH:$GOPATH"
+# Completion configuration
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' # case-insensitive completion
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} # color completion
+zstyle ':completion:*' menu no # disable completion menu
 
-export PATH="$PATH:$HOME/TEE-CLC"
-
-export MYVIMRC="$HOME/.config/nvim/init.vim"
-# neofetch
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/alainnormandin/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/alainnormandin/opt/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/alainnormandin/opt/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/alainnormandin/opt/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-fpath=(~/.zsh.d/ $fpath)
-
-export NVM_DIR=~/.nvm
-source $(brew --prefix nvm)/nvm.sh
-
-export GOOGLE_APPLICATION_CREDENTIALS=/Users/alainnormandin/Documents/dev.nosync/google/credentials/ma-carte-de-membre-a572c35fa253.json
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color=always $realpath'
+zstyle ':completion:*:git-checkout:*' sort false # disable sorting for git checkout
+zstyle ':completion:*:descriptions' format '[%d]' # set descriptions format to enable group support
+# zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup # use tmux popup for fzf-tab
 
 
-set -o vi
 
-alias pmv="python ~/mv.py"
+# Aliases
+alias ls='ls --color=auto'
 
-alias neo="cd ~/Documents/dev.nosync/neosapiens/"
+# Shell integragions
+eval "$(fzf --zsh)"  # ^r to search history
 
-export PATH="/usr/local/sbin:$PATH"
+# Initialize Powerlevel10k
+[[ ! -f ~/.p10k.zsh ]] ||source ~/.p10k.zsh

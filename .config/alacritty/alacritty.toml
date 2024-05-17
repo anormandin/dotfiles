@@ -1,0 +1,25 @@
+[colors.primary]
+background = "#1d1f21"
+foreground = "#c5c8c6"
+
+[font]
+size = 16.0
+
+[font.normal]
+family = "JetBrainsMono Nerd Font"
+style = "Regular"
+
+[window]
+decorations = "Buttonless"
+dynamic_title = true
+opacity = 0.9
+title = "Alacritty"
+option_as_alt= "OnlyLeft"
+
+[window.position]
+x = 0
+y = 0
+
+[window.padding]
+x = 4
+y = 4
