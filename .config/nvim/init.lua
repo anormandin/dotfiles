@@ -16,6 +16,7 @@ spec "user.lualine"
 spec "user.bufdelete"
 spec "user.cmp"
 spec "user.comment"
+spec "user.noice"
 
 -- spec "user.neoscroll"
 

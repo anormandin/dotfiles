@@ -4,28 +4,6 @@ local M = {
 }
 
 function M.config()
-  local mappings = {
-    q = { "<cmd>confirm q<CR>", "Quit" },
-    h = { "<cmd>nohlsearch<CR>", "NOHL" },
-    [";"] = { "<cmd>tabnew | terminal<CR>", "Term" },
-    v = { "<cmd>vsplit<CR>", "Split" },
-    b = { name = "Buffers" },
-    d = { name = "Debug" },
-    f = { name = "Find" },
-    g = { name = "Git" },
-    l = { name = "LSP" },
-    p = { name = "Plugins" },
-    t = { name = "Test" },
-    a = {
-      name = "Tab",
-      n = { "<cmd>$tabnew<cr>", "New Empty Tab" },
-      N = { "<cmd>tabnew %<cr>", "New Tab" },
-      o = { "<cmd>tabonly<cr>", "Only" },
-      h = { "<cmd>-tabmove<cr>", "Move Left" },
-      l = { "<cmd>+tabmove<cr>", "Move Right" },
-    },
-    T = { name = "Treesitter" },
-  }
 
   local which_key = require "which-key"
   which_key.setup {
@@ -46,12 +24,9 @@ function M.config()
         g = false,
       },
     },
-    window = {
-      border = "rounded",
-      position = "bottom",
-      padding = { 2, 2, 2, 2 },
+    win = {
+      padding = { 2, 2 },
     },
-    ignore_missing = true,
     show_help = false,
     show_keys = false,
     disable = {
@@ -60,12 +35,27 @@ function M.config()
     },
   }
 
-  local opts = {
-    mode = "n", -- NORMAL mode
-    prefix = "<leader>",
-  }
+  which_key.add({
+    {"<leader>q>", "<cmd>confirm q<CR>", desc="Quit" },
+    {"<leader>T", group="Treesitter"},
+    {"<leader>b", group="Buffers"},
+    {"<leader>d", group="Debug"},
+    {"<leader>f", group="Find"},
+    {"<leader>g", group="Git"},
+    {"<leader>l", group="LSP"},
+    {"<leader>p", group="Plugins"},
+    {"<leader>t", group="Tests"},
+    {"<leader>a", group="Tabs"},
+    {"<leader>an", "<cmd>tabnew<CR>", desc="New Empty Tab"},
+    {"<leader>aN", "<cmd>tabnew<CR>", desc="New Tab"},
+    {"<leader>ao", "<cmd>tabonly<CR>", desc="Only"},
+    {"<leader>ah", "<cmd>-tabmove<CR>", desc="Move Left"},
+    {"<leader>al", "<cmd>+tabmove<CR>", desc="Move Right"},
+    {"<leader><cr>", "<cmd>nohlsearch<CR>", desc="NOHL"},
+    {"<leader>;", "<cmd>tabnew | terminal<CR>", desc="Terminal"},
 
-  which_key.register(mappings, opts)
+
+  })
 end
 
 return M
