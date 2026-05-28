@@ -1,0 +1,17 @@
+# --- zsh runtime / generated files (not config) ---
+home/.config/zsh/.zcompdump*
+home/.config/zsh/.zsh_history
+
+# Auto-cloned by plugins.zsh on first shell startup; reproducible, don't track
+home/.config/zsh/plugins/
+
+# --- nvim machine-local Claude settings ---
+home/.config/nvim/.claude/settings.local.json
+
+# --- emacs installed packages & generated/backup files (reproducible) ---
+home/.config/emacs/elpa/
+home/.config/emacs/eln-cache/
+home/.config/emacs/auto-save-list/
+home/.config/emacs/transient/
+home/.config/emacs/*~
+home/.config/emacs/\#*\#
