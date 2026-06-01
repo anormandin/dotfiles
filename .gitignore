@@ -5,8 +5,14 @@ home/.config/zsh/.zsh_history
 # Auto-cloned by plugins.zsh on first shell startup; reproducible, don't track
 home/.config/zsh/plugins/
 
-# --- nvim machine-local Claude settings ---
-home/.config/nvim/.claude/settings.local.json
+# --- machine-local Claude settings (any package) ---
+**/.claude/settings.local.json
+
+# --- JetBrains IDE workspace files (not config) ---
+**/.idea/
+
+# --- editor/config backup files ---
+*.bak
 
 # --- emacs installed packages & generated/backup files (reproducible) ---
 home/.config/emacs/elpa/
