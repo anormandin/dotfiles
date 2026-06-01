@@ -15,6 +15,7 @@ alias grep='rg --color=auto'
 alias diff='diff --color=auto'
 alias df='df -h'
 alias pmv=' python3 ~/mv.py'
+alias md='glow -p'  # render markdown in a TUI pager
 
 # --- dotfiles / GNU Stow (package: home) ---
 alias dot='cd ~/dotfiles'
