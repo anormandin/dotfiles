@@ -1,4 +1,4 @@
-alias bucc="npm install -g @anthropic-ai/claude-code"
+alias bucc="claude --version && npm install -g @anthropic-ai/claude-code && claude --version"
 alias neo="cd ~/Documents/dev.nosync/neosapiens/"
 alias vimconfig="nvim ~/.config/nvim/init.lua"
 
@@ -14,6 +14,7 @@ compdef eza=ls
 alias grep='rg --color=auto'
 alias diff='diff --color=auto'
 alias df='df -h'
+alias pmv=' python3 ~/mv.py'
 
 # --- dotfiles / GNU Stow (package: home) ---
 alias dot='cd ~/dotfiles'
