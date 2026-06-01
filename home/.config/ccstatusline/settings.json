@@ -8,15 +8,18 @@
         "backgroundColor": "bgCyan"
       },
       {
+        "id": "f06100f0-0035-4307-bbc3-c905dd1038f3",
+        "type": "current-working-dir",
+        "backgroundColor": "bgBrightGreen",
+        "metadata": {
+          "fishStyle": "true"
+        }
+      },
+      {
         "id": "9cc7f2ba-b35d-4192-9cd2-39a675f52a36",
         "type": "output-style",
         "backgroundColor": "bgBrightWhite",
         "rawValue": true
-      },
-      {
-        "id": "f06100f0-0035-4307-bbc3-c905dd1038f3",
-        "type": "current-working-dir",
-        "backgroundColor": "bgBrightGreen"
       }
     ],
     [
@@ -43,34 +46,41 @@
         "backgroundColor": "bgBrightCyan"
       },
       {
+        "id": "54c8cc0b-75d5-419b-bd63-06a48c3d910f",
+        "type": "skills",
+        "backgroundColor": "bgBlue"
+      },
+      {
         "id": "c550577e-3d92-45e1-b642-5d4f49a17d7e",
         "type": "git-changes",
         "backgroundColor": "bgBrightRed"
-      },
-      {
-        "id": "9c65d7c1-55af-4e00-80fa-6d69be0c4088",
-        "type": "git-root-dir",
-        "backgroundColor": "bgBrightYellow"
       }
     ]
   ],
-  "flexMode": "full-minus-40",
+  "flexMode": "full",
   "compactThreshold": 60,
   "colorLevel": 3,
   "defaultPadding": " ",
   "inheritSeparatorColors": false,
   "globalBold": true,
+  "gitCacheTtlSeconds": 5,
+  "minimalistMode": false,
   "powerline": {
     "enabled": true,
     "separators": [
-      ""
+      ""
     ],
     "separatorInvertBackground": [
-      false
+      true
     ],
-    "startCaps": [],
-    "endCaps": [],
-    "theme": "minimal",
-    "autoAlign": true
+    "startCaps": [
+      ""
+    ],
+    "endCaps": [
+      ""
+    ],
+    "theme": "onedark",
+    "autoAlign": true,
+    "continueThemeAcrossLines": false
   }
 }
