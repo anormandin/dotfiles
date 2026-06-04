@@ -13,15 +13,21 @@ fi
 # For non-interactive shells, load nvm and conda immediately
 # (interactive shells use lazy loading from .zshrc)
 if [[ ! -o interactive ]]; then
-    # Load nvm
+    # Load nvm (Homebrew path on macOS, standard ~/.nvm on Linux)
     export NVM_DIR="$HOME/.nvm"
-    [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+    if [ -s "/opt/homebrew/opt/nvm/nvm.sh" ]; then
+        \. "/opt/homebrew/opt/nvm/nvm.sh"
+    elif [ -s "$NVM_DIR/nvm.sh" ]; then
+        \. "$NVM_DIR/nvm.sh"
+    fi
 
-    # Load conda
-    if [ -f "/Users/alainnormandin/opt/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/alainnormandin/opt/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/alainnormandin/opt/anaconda3/bin:$PATH"
+    # Load conda (macOS install under ~/opt/anaconda3; skipped if absent)
+    if [ -d "$HOME/opt/anaconda3" ]; then
+        if [ -f "$HOME/opt/anaconda3/etc/profile.d/conda.sh" ]; then
+            . "$HOME/opt/anaconda3/etc/profile.d/conda.sh"
+        else
+            export PATH="$HOME/opt/anaconda3/bin:$PATH"
+        fi
     fi
 fi
 

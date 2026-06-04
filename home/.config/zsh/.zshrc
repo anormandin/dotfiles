@@ -39,14 +39,19 @@ zstyle ':completion:*' menu select
 # Completion case sensitivity
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' # like smartcase in nvim
 
-# fuzzy finder
+# fuzzy finder key-bindings + completion (install path differs per platform)
 if [[ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ]]; then
+  # macOS (Homebrew)
   source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
   source /opt/homebrew/opt/fzf/shell/completion.zsh
+elif [[ -f /usr/share/fzf/key-bindings.zsh ]]; then
+  # Linux (Arch package)
+  source /usr/share/fzf/key-bindings.zsh
+  source /usr/share/fzf/completion.zsh
 fi
 
 # bun completions
-[ -s "/Users/alainnormandin/.bun/_bun" ] && source "/Users/alainnormandin/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # -------------------- Modular config files ----------------------
 source "$ZDOTDIR/fzf.zsh"
