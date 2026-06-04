@@ -3,6 +3,7 @@
 format = """
 [░▒▓](#a3aed2)\
 $os\
+$hostname\
 [](bg:#769ff0 fg:#a3aed2)\
 $directory\
 [](fg:#769ff0 bg:#394260)\
@@ -14,9 +15,12 @@ $bun\
 $rust\
 $golang\
 $php\
-[](fg:#212736 bg:#1d2230)\
+[](fg:#212736)\
+$fill\
+[](fg:#1d2230)\
+$cmd_duration\
 $time\
-[ ](fg:#1d2230)\
+[](fg:#1d2230)\
 \n$character"""
 
 [directory]
@@ -80,3 +84,16 @@ format = "[ $symbol ]($style)"
 Macos = ""
 Arch = ""
 Linux = ""
+
+[hostname]
+ssh_only = false
+style = "bg:#a3aed2 fg:#090c0c"
+format = "[$hostname ]($style)"
+
+[fill]
+symbol = " "
+
+[cmd_duration]
+min_time = 2000
+style = "fg:#a0a9cb bg:#1d2230"
+format = "[ $duration ]($style)"
