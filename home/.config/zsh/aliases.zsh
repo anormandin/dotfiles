@@ -3,6 +3,7 @@ alias vimconfig="nvim ~/.config/nvim/init.lua"
 # SSH into archdev. With an MCM worktree name (e.g. green), also tunnel that
 # worktree's Vite client port, so the site opens on the Mac at http://localhost:<port>
 # while the session stays open. Port is read live from the worktree's .env.local.
+unalias archdev 2>/dev/null  # drop any stale `archdev` alias so re-sourcing defines the function
 archdev() {
   local wt="$1"
   if [[ -z "$wt" ]]; then
