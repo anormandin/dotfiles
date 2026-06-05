@@ -1,6 +1,23 @@
-alias bucc="claude --version && npm install -g @anthropic-ai/claude-code && claude --version"
 alias neo="cd ~/Documents/dev.nosync/neosapiens/"
 alias vimconfig="nvim ~/.config/nvim/init.lua"
+# SSH into archdev. With an MCM worktree name (e.g. green), also tunnel that
+# worktree's Vite client port, so the site opens on the Mac at http://localhost:<port>
+# while the session stays open. Port is read live from the worktree's .env.local.
+archdev() {
+  local wt="$1"
+  if [[ -z "$wt" ]]; then
+    ssh anormandin@archdev
+    return
+  fi
+  local port
+  port=$(ssh anormandin@archdev "grep -hE '^VITE_CLIENT_PORT=' ~/dev/w/MCM/$wt/Frontend/mcm.client/.env.local 2>/dev/null | cut -d= -f2")
+  if [[ -z "$port" ]]; then
+    echo "archdev: no VITE_CLIENT_PORT for worktree '$wt' (~/dev/w/MCM/$wt)" >&2
+    return 1
+  fi
+  echo "→ http://localhost:${port}  (archdev $wt · Vite) — keep this session open"
+  ssh -L "${port}:localhost:${port}" anormandin@archdev
+}
 
 # Better ls
 alias ls='eza --icons'
