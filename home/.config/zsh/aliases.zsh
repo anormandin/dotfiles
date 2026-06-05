@@ -20,6 +20,24 @@ archdev() {
   ssh -L "${port}:localhost:${port}" anormandin@archdev
 }
 
+# Snip a screen region on the Mac and ship it to archdev (~/shots), printing the
+# remote path to hand to a Claude agent there — images can't paste over ssh/tmux.
+if [[ "$OSTYPE" == darwin* ]]; then
+  shot2arch() {
+    local name="shot-$(date +%Y%m%d-%H%M%S).png" tmp
+    tmp="/tmp/$name"
+    screencapture -i "$tmp" || return 1
+    if [[ -s "$tmp" ]]; then
+      ssh anormandin@archdev "mkdir -p ~/shots" || { rm -f "$tmp"; return 1; }
+      scp -q "$tmp" "anormandin@archdev:~/shots/$name" && rm -f "$tmp"
+      echo "→ ~/shots/$name   (on archdev — give this path to the agent)"
+    else
+      echo "shot2arch: cancelled (no capture)" >&2
+      return 1
+    fi
+  }
+fi
+
 # Better ls
 alias ls='eza --icons'
 alias ll='eza -lh --icons --git'
