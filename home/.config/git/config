@@ -1,0 +1,12 @@
+# Shared, portable Git config — XDG global config ($XDG_CONFIG_HOME/git/config),
+# stowed to both machines. Git ALSO reads ~/.gitconfig, which is a real per-machine
+# file with higher precedence and is where `git config --global` writes land — so
+# machine- and tool-specific keys (editors, GUI diff tools, CodeRabbit machineId)
+# never pollute this shared file.
+[user]
+	name = Alain Normandin
+	email = alain.normandin@neosapiens.com
+[core]
+	autocrlf = input
+[alias]
+	dft = !GIT_EXTERNAL_DIFF=difft git diff
