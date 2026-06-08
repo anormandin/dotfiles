@@ -14,10 +14,12 @@ config.window_background_opacity = 0.8
 config.macos_window_background_blur = 40
 config.window_background_gradient = {
 	orientation = "Vertical",
-	-- sumiInk3 (lighter) → waveBlue1 (Kanagawa's iconic blue) → deep ink
-	colors = { "#363646", "#223249", "#0e0e14" },
+	-- Kanagawa sumi-ink scale: sumiInk3 → sumiInk1 (terminal bg) → sumiInk0
+	colors = { "#363646", "#1f1f28", "#16161d" },
 	interpolation = "CatmullRom",
 	blend = "Oklab",
+	-- 0 = no dithering grain (default adds noise, which looks grainy here)
+	noise = 0,
 }
 config.window_decorations = "TITLE|RESIZE"
 config.native_macos_fullscreen_mode = true
