@@ -42,6 +42,10 @@
       {
         "id": "weekly-usage-1",
         "type": "weekly-usage"
+      },
+      {
+        "id": "weekly-reset-1",
+        "type": "weekly-reset-timer"
       }
     ],
     [
