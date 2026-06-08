@@ -37,7 +37,11 @@
       },
       {
         "id": "8392af76-9ff7-4629-8835-25ba8b1e3d65",
-        "type": "free-memory"
+        "type": "block-timer"
+      },
+      {
+        "id": "weekly-usage-1",
+        "type": "weekly-usage"
       }
     ],
     [
