@@ -4,56 +4,58 @@
     [
       {
         "id": "e705c823-a517-4363-8674-d15dbd3bfc7e",
-        "type": "model",
-        "backgroundColor": "bgCyan"
+        "type": "model"
+      },
+      {
+        "id": "flex-1a",
+        "type": "flex-separator"
+      },
+      {
+        "id": "4bffb62d-96e3-41f9-9295-8d1434b8fc29",
+        "type": "context-bar"
+      },
+      {
+        "id": "flex-1b",
+        "type": "flex-separator"
       },
       {
         "id": "f06100f0-0035-4307-bbc3-c905dd1038f3",
         "type": "current-working-dir",
-        "backgroundColor": "bgBrightGreen",
         "metadata": {
           "fishStyle": "true"
         }
-      },
-      {
-        "id": "9cc7f2ba-b35d-4192-9cd2-39a675f52a36",
-        "type": "output-style",
-        "backgroundColor": "bgBrightWhite",
-        "rawValue": true
       }
     ],
     [
       {
         "id": "72c5066f-f393-4b5c-960c-e0b7697214e7",
-        "type": "thinking-effort",
-        "backgroundColor": "bgBrightCyan"
+        "type": "thinking-effort"
       },
       {
-        "id": "4bffb62d-96e3-41f9-9295-8d1434b8fc29",
-        "type": "context-bar",
-        "backgroundColor": "bgBlue"
+        "id": "flex-2a",
+        "type": "flex-separator"
       },
       {
         "id": "8392af76-9ff7-4629-8835-25ba8b1e3d65",
-        "type": "free-memory",
-        "backgroundColor": "bgBrightMagenta"
+        "type": "free-memory"
       }
     ],
     [
       {
-        "id": "c4e6b8bd-15d4-491a-9577-a00b3d5fd675",
-        "type": "git-branch",
-        "backgroundColor": "bgBrightCyan"
+        "id": "54c8cc0b-75d5-419b-bd63-06a48c3d910f",
+        "type": "skills"
       },
       {
-        "id": "54c8cc0b-75d5-419b-bd63-06a48c3d910f",
-        "type": "skills",
-        "backgroundColor": "bgBlue"
+        "id": "flex-3a",
+        "type": "flex-separator"
       },
       {
         "id": "c550577e-3d92-45e1-b642-5d4f49a17d7e",
-        "type": "git-changes",
-        "backgroundColor": "bgBrightRed"
+        "type": "git-changes"
+      },
+      {
+        "id": "c4e6b8bd-15d4-491a-9577-a00b3d5fd675",
+        "type": "git-branch"
       }
     ]
   ],
@@ -66,7 +68,7 @@
   "gitCacheTtlSeconds": 5,
   "minimalistMode": false,
   "powerline": {
-    "enabled": true,
+    "enabled": false,
     "separators": [
       ""
     ],
