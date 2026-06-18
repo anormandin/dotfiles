@@ -25,3 +25,5 @@ home/.config/emacs/auto-save-list/
 home/.config/emacs/transient/
 home/.config/emacs/*~
 home/.config/emacs/\#*\#
+# Hyprland 0.55 autoregenerates this stub even when using hyprland.lua
+home/.config/hypr/hyprland.conf
