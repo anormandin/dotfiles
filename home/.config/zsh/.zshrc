@@ -112,9 +112,10 @@ DEFAULT_USER=`whoami`
 
 export MYVIMRC="$HOME/.config/nvim/init.vim"
 export GOPATH=~/go/bin
+export DOOM_BIN=$HOME/.config/emacs/bin
 
 # Consolidate PATH exports
-export PATH="$PATH:~/bin:$HOME/.dotnet/tools:$HOME/.local/bin:$GOPATH:$HOME/TEE-CLC"
+export PATH="$PATH:~/bin:$HOME/.dotnet/tools:$HOME/.local/bin:$GOPATH:$HOME/TEE-CLC:$DOOM_BIN"
 
 
 # [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

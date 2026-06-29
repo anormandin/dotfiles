@@ -27,3 +27,12 @@ home/.config/emacs/*~
 home/.config/emacs/\#*\#
 # Hyprland 0.55 autoregenerates this stub even when using hyprland.lua
 home/.config/hypr/hyprland.conf
+# --- doom emacs user config (~/.config/doom): track init/config/packages.el,
+#     ignore generated/backup files. Doom's framework + packages live in
+#     ~/.config/emacs (its own git clone), outside this repo. ---
+home/.config/doom/.local/
+home/.config/doom/eln-cache/
+home/.config/doom/auto-save-list/
+home/.config/doom/transient/
+home/.config/doom/*~
+home/.config/doom/\#*\#
