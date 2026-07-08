@@ -1,6 +1,7 @@
 local wezterm = require("wezterm")
 local act = wezterm.action
 local config = wezterm.config_builder()
+local is_macos = wezterm.target_triple:find("darwin")
 
 -- Color scheme: custom Kanagawa loaded from colors/kanagawa.lua
 local kanagawa = require("colors.kanagawa")
@@ -23,11 +24,20 @@ config.window_background_gradient = {
 }
 config.window_decorations = "TITLE|RESIZE"
 config.native_macos_fullscreen_mode = true
-config.window_padding = { left = 24, right = 24, top = 14, bottom = 10 }
+if is_macos then
+	config.window_padding = { left = 24, right = 24, top = 14, bottom = 10 }
+else
+	config.window_padding = { left = 6, right = 6, top = 4, bottom = 2 }
+end
 
 -- Font
 config.font = wezterm.font_with_fallback({ "Hack Nerd Font Mono" })
-config.font_size = 16
+-- macOS renders points at 72 DPI, Linux at 96 — the same size looks ~1.33x larger on Linux
+if is_macos then
+	config.font_size = 16
+else
+	config.font_size = 12
+end
 config.line_height = 1.1
 config.adjust_window_size_when_changing_font_size = false
 
