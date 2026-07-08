@@ -24,7 +24,9 @@ setopt NOBEEP
 setopt NUMERIC_GLOB_SORT  #sort file10 after file9
 
 # -------------------- ZOxide ----------------------
-eval "$(zoxide init zsh)"
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init zsh)"
+fi
 
 # -------------------- Completions ----------------------
 # Load completion system
@@ -48,6 +50,10 @@ elif [[ -f /usr/share/fzf/key-bindings.zsh ]]; then
   # Linux (Arch package)
   source /usr/share/fzf/key-bindings.zsh
   source /usr/share/fzf/completion.zsh
+elif [[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]]; then
+  # Linux (Debian/Ubuntu package)
+  source /usr/share/doc/fzf/examples/key-bindings.zsh
+  source /usr/share/doc/fzf/examples/completion.zsh
 fi
 
 # bun completions

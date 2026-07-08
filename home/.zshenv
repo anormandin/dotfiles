@@ -36,3 +36,8 @@ fi
 if [[ -n "$ZDOTDIR" && -f "$ZDOTDIR/.zshenv" ]]; then
   source "$ZDOTDIR/.zshenv"
 fi
+
+# uv installer env (adds ~/.local/bin to PATH); guarded for machines without uv
+if [ -f "$HOME/.local/bin/env" ]; then
+  . "$HOME/.local/bin/env"
+fi
