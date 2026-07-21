@@ -20,5 +20,8 @@ export GPG_TTY=$(tty)
 # Personal binaries/scripts
 export PATH="$HOME/.local/bin:$PATH"
 
+# Rust toolchain (rustup/cargo)
+export PATH="$HOME/.cargo/bin:$PATH"
+
 # --------------- PAGER ----------
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"

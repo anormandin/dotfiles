@@ -37,7 +37,16 @@ vim.lsp.config("lua_ls", {
 
 -- vim.lsp.config("omnisharp")
 
+vim.lsp.config("rust_analyzer", {
+  settings = {
+    ["rust-analyzer"] = {
+      check = { command = "clippy" }, -- lint with clippy on save instead of plain cargo check
+    }
+  }
+})
+
 vim.lsp.enable({
   "lua_ls",
-  "omnisharp"
+  "omnisharp",
+  "rust_analyzer"
 })
