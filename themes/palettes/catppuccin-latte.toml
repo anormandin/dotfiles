@@ -1,6 +1,7 @@
 name = "Catppuccin Latte"
 mode = "light"
 twin = "catppuccin-mocha"
+font = "Maple Mono NF"
 
 [colors]
 wall = "#dce0e8"

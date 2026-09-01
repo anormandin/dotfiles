@@ -1,5 +1,6 @@
 name = "Solarized Dark"
 mode = "dark"
+font = "Maple Mono NF"
 
 [colors]
 wall = "#00212b"

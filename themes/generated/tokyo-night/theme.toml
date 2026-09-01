@@ -1,5 +1,6 @@
 name = "Tokyo Night"
 mode = "dark"
+font = "Maple Mono NF"
 
 [colors]
 wall = "#16161e"

@@ -1,5 +1,6 @@
 name = "One Dark"
 mode = "dark"
+font = "Maple Mono NF"
 
 [colors]
 wall = "#21252b"

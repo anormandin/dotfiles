@@ -1,5 +1,6 @@
 name = "Gruvbox Dark"
 mode = "dark"
+font = "Maple Mono NF"
 
 [colors]
 wall = "#1d2021"

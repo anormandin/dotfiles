@@ -1,5 +1,6 @@
 name = "Dracula"
 mode = "dark"
+font = "Maple Mono NF"
 
 [colors]
 wall = "#191a21"

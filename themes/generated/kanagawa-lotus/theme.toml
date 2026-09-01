@@ -1,6 +1,7 @@
 name = "Kanagawa Lotus"
 mode = "light"
 twin = "kanagawa-wave"
+font = "Maple Mono NF"
 
 [colors]
 wall = "#e7dba0"

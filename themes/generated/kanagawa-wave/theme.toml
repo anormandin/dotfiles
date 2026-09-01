@@ -1,6 +1,7 @@
 name = "Kanagawa Wave"
 mode = "dark"
 twin = "kanagawa-lotus"
+font = "Maple Mono NF"
 
 [colors]
 wall = "#16161d"

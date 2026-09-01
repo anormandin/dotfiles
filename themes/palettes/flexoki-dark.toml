@@ -1,5 +1,6 @@
 name = "Flexoki Dark"
 mode = "dark"
+font = "Maple Mono NF"
 
 [colors]
 wall = "#100f0f"

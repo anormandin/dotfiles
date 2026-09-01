@@ -44,7 +44,8 @@ else
 end
 
 -- Font
-config.font = wezterm.font_with_fallback({ "Hack Nerd Font Mono" })
+-- Per-theme font (palette `font` key), with Hack Nerd as glyph fallback
+config.font = wezterm.font_with_fallback({ theme.font or "Hack Nerd Font Mono", "Hack Nerd Font Mono" })
 -- macOS renders points at 72 DPI, Linux at 96 — the same size looks ~1.33x larger on Linux
 if is_macos then
 	config.font_size = 16

@@ -110,7 +110,8 @@ def variables(slug, pal):
             white, brwhite = mix(c["fg"], c["term"], 0.15), c["fg"]
         ansi = [black] + seq + [white] + [brblack] + seq + [brwhite]
 
-    v = {"slug": slug, "name": pal["name"], "mode": pal.get("mode", "dark")}
+    v = {"slug": slug, "name": pal["name"], "mode": pal.get("mode", "dark"),
+         "font": pal.get("font", "Hack Nerd Font Mono")}
     for k, val in c.items():
         v[k] = val
         v[k + "_hex"] = val.lstrip("#")

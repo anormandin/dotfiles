@@ -1,5 +1,6 @@
 name = "Nord"
 mode = "dark"
+font = "Maple Mono NF"
 
 [colors]
 wall = "#242933"

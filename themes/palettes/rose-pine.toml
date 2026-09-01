@@ -1,6 +1,7 @@
 name = "Rosé Pine"
 mode = "dark"
 twin = "rose-pine-dawn"
+font = "Maple Mono NF"
 
 [colors]
 wall = "#191724"
