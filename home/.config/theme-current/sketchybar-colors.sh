@@ -1,0 +1,1 @@
+../../../themes/generated/oxocarbon/sketchybar-colors.sh

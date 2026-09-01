@@ -65,6 +65,7 @@ source "$ZDOTDIR/aliases.zsh"
 source "$ZDOTDIR/bindings.zsh"
 source "$ZDOTDIR/plugins.zsh"
 source "$ZDOTDIR/prompt.zsh"
+source "$ZDOTDIR/theme.zsh"
 
 
 

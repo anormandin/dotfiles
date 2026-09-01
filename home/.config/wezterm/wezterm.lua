@@ -3,11 +3,18 @@ local act = wezterm.action
 local config = wezterm.config_builder()
 local is_macos = wezterm.target_triple:find("darwin")
 
--- Color scheme: custom Kanagawa loaded from colors/kanagawa.lua
-local kanagawa = require("colors.kanagawa")
-config.color_schemes = { ["Kanagawa"] = kanagawa.colors }
-config.color_scheme = "Kanagawa"
-config.force_reverse_video_cursor = kanagawa.force_reverse_video_cursor
+-- Color scheme: current theme from ~/.config/theme-current (managed by the
+-- `theme` CLI), falling back to the vendored Kanagawa if no theme is set.
+local theme_file = wezterm.home_dir .. "/.config/theme-current/wezterm.lua"
+local ok, theme = pcall(dofile, theme_file)
+if not ok then
+	theme = require("colors.kanagawa")
+	theme.gradient = { "#363646", "#1f1f28", "#16161d" }
+end
+wezterm.add_to_config_reload_watch_list(theme_file)
+config.color_schemes = { ["Theme"] = theme.colors }
+config.color_scheme = "Theme"
+config.force_reverse_video_cursor = theme.force_reverse_video_cursor
 config.bold_brightens_ansi_colors = "No"
 
 -- Window appearance
@@ -15,8 +22,8 @@ config.window_background_opacity = 0.8
 config.macos_window_background_blur = 40
 config.window_background_gradient = {
 	orientation = "Vertical",
-	-- Kanagawa sumi-ink scale: sumiInk3 → sumiInk1 (terminal bg) → sumiInk0
-	colors = { "#363646", "#1f1f28", "#16161d" },
+	-- raised surface → terminal bg → deep bg (per-theme, from theme-current)
+	colors = theme.gradient,
 	interpolation = "CatmullRom",
 	blend = "Oklab",
 	-- 0 = no dithering grain (default adds noise, which looks grainy here)

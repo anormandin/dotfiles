@@ -1,0 +1,18 @@
+name = "Vesper"
+mode = "dark"
+
+[colors]
+wall = "#0a0a0a"
+wall2 = "#101010"
+bar = "#101010"
+term = "#101010"
+fg = "#ffffff"
+dim = "#575757"
+accent = "#ffc799"
+red = "#ff8080"
+orange = "#ffc799"
+yellow = "#ffcfa8"
+green = "#99ffe4"
+cyan = "#99ffe4"
+magenta = "#a0a0a0"
+sel = "#232323"

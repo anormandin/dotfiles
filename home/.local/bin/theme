@@ -1,0 +1,338 @@
+#!/usr/bin/env python3
+"""theme — dotfiles theme switcher.
+
+Palettes live in <repo>/themes/palettes/*.toml, templates in
+<repo>/themes/templates/, pre-rendered output in <repo>/themes/generated/<slug>/.
+The live pointer is <repo>/home/.config/theme-current/ — a directory of
+per-part relative symlinks, published to ~/.config/theme-current by stow.
+
+Usage:
+  theme                      fzf menu (Enter applies)
+  theme list                 list themes, mark current
+  theme set <slug>           switch everything + reload running apps
+  theme set <slug> --only terminal,bar   switch only some parts
+  theme toggle               switch to the current theme's light/dark twin
+  theme generate [slug|--all]  re-render generated/ from palettes + templates
+  theme status               show current theme per part
+  theme preview <slug>       print palette swatches (used by the fzf menu)
+
+Parts: terminal (wezterm) · bar (sketchybar) · borders (JankyBorders)
+       tools (btop, lazygit, fzf) · wallpaper
+"""
+
+import os
+import string
+import struct
+import subprocess
+import sys
+import zlib
+
+try:
+    import tomllib
+except ModuleNotFoundError:
+    sys.exit("theme: Python 3.11+ required (tomllib)")
+
+SCRIPT = os.path.realpath(__file__)  # <repo>/home/.local/bin/theme
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(SCRIPT))))
+PALETTES = os.path.join(REPO, "themes", "palettes")
+TEMPLATES = os.path.join(REPO, "themes", "templates")
+GENERATED = os.path.join(REPO, "themes", "generated")
+CURRENT = os.path.join(REPO, "home", ".config", "theme-current")
+WEZTERM_CONF = os.path.join(REPO, "home", ".config", "wezterm", "wezterm.lua")
+
+PARTS = {
+    "terminal": ["wezterm.lua"],
+    "bar": ["sketchybar-colors.sh"],
+    "borders": ["borders.sh"],
+    "tools": ["btop.theme", "lazygit.yml", "fzf.zsh"],
+    "wallpaper": ["wallpaper.png"],
+}
+TEMPLATE_FILES = {
+    "wezterm.lua": "wezterm.lua.tmpl",
+    "sketchybar-colors.sh": "sketchybar-colors.sh.tmpl",
+    "borders.sh": "borders.sh.tmpl",
+    "btop.theme": "btop.theme.tmpl",
+    "lazygit.yml": "lazygit.yml.tmpl",
+    "fzf.zsh": "fzf.zsh.tmpl",
+}
+IS_MAC = sys.platform == "darwin"
+
+
+# ── color helpers ────────────────────────────────────────────────────────────
+
+def rgb(hexstr):
+    h = hexstr.lstrip("#")
+    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+
+
+def hexs(t):
+    return "#%02x%02x%02x" % t
+
+
+def mix(a, b, t):
+    """t=0 → a, t=1 → b"""
+    ra, rb = rgb(a), rgb(b)
+    return hexs(tuple(round(ra[i] + (rb[i] - ra[i]) * t) for i in range(3)))
+
+
+# ── palettes ─────────────────────────────────────────────────────────────────
+
+def slugs():
+    return sorted(f[:-5] for f in os.listdir(PALETTES) if f.endswith(".toml"))
+
+
+def load(slug):
+    path = os.path.join(PALETTES, slug + ".toml")
+    if not os.path.exists(path):
+        sys.exit(f"theme: unknown theme '{slug}' (see `theme list`)")
+    with open(path, "rb") as f:
+        return tomllib.load(f)
+
+
+def variables(slug, pal):
+    c = dict(pal["colors"])
+    light = pal.get("mode") == "light"
+    c.setdefault("sel", mix(c["accent"], c["term"], 0.72))
+
+    # wezterm background gradient: slightly raised → terminal bg → wallpaper deep
+    g1 = mix(c["term"], "#000000" if light else "#ffffff", 0.10)
+    grad = [g1, c["term"], c["wall"]]
+
+    if "ansi" in pal:
+        ansi = list(pal["ansi"]["normal"]) + list(pal["ansi"]["bright"])
+    else:
+        seq = [c["red"], c["green"], c["yellow"], c["accent"], c["magenta"], c["cyan"]]
+        if light:
+            black, brblack = c["fg"], c["dim"]
+            white, brwhite = mix(c["fg"], c["term"], 0.55), mix(c["fg"], c["term"], 0.75)
+        else:
+            black, brblack = c["wall"], c["dim"]
+            white, brwhite = mix(c["fg"], c["term"], 0.15), c["fg"]
+        ansi = [black] + seq + [white] + [brblack] + seq + [brwhite]
+
+    v = {"slug": slug, "name": pal["name"], "mode": pal.get("mode", "dark")}
+    for k, val in c.items():
+        v[k] = val
+        v[k + "_hex"] = val.lstrip("#")
+    for i, val in enumerate(ansi):
+        v[f"ansi{i}"] = val
+    for i, val in enumerate(grad):
+        v[f"g{i + 1}"] = val
+    return v
+
+
+# ── generation ───────────────────────────────────────────────────────────────
+
+def write_wallpaper(path, top, bottom, w=2560, h=1600):
+    """Vertical gradient PNG, stdlib only."""
+    rows = bytearray()
+    for y in range(h):
+        col = rgb(mix(top, bottom, y / (h - 1)))
+        rows += b"\x00" + bytes(col) * w
+    def chunk(tag, data):
+        c = tag + data
+        return struct.pack(">I", len(data)) + c + struct.pack(">I", zlib.crc32(c))
+    png = (b"\x89PNG\r\n\x1a\n"
+           + chunk(b"IHDR", struct.pack(">IIBBBBB", w, h, 8, 2, 0, 0, 0))
+           + chunk(b"IDAT", zlib.compress(bytes(rows), 6))
+           + chunk(b"IEND", b""))
+    with open(path, "wb") as f:
+        f.write(png)
+
+
+def generate(slug):
+    pal = load(slug)
+    v = variables(slug, pal)
+    out = os.path.join(GENERATED, slug)
+    os.makedirs(out, exist_ok=True)
+    for fname, tmpl in TEMPLATE_FILES.items():
+        with open(os.path.join(TEMPLATES, tmpl)) as f:
+            rendered = string.Template(f.read()).safe_substitute(v)
+        with open(os.path.join(out, fname), "w") as f:
+            f.write(rendered)
+    # theme.toml: copy of the palette, read back by `theme status/toggle`
+    with open(os.path.join(PALETTES, slug + ".toml")) as f:
+        src = f.read()
+    with open(os.path.join(out, "theme.toml"), "w") as f:
+        f.write(src)
+    write_wallpaper(os.path.join(out, "wallpaper.png"), v["wall2"], v["wall"])
+    return out
+
+
+# ── current pointer ──────────────────────────────────────────────────────────
+
+def point(slug, files):
+    """Repoint per-file relative symlinks inside home/.config/theme-current."""
+    os.makedirs(CURRENT, exist_ok=True)
+    rel = os.path.join("..", "..", "..", "themes", "generated", slug)
+    for fname in files:
+        link = os.path.join(CURRENT, fname)
+        if os.path.islink(link) or os.path.exists(link):
+            os.remove(link)
+        os.symlink(os.path.join(rel, fname), link)
+
+
+def current_slug(fname="theme.toml"):
+    link = os.path.join(CURRENT, fname)
+    if not os.path.islink(link):
+        return None
+    return os.path.basename(os.path.dirname(os.readlink(link)))
+
+
+# ── reload hooks ─────────────────────────────────────────────────────────────
+
+def run(cmd, **kw):
+    return subprocess.run(cmd, capture_output=True, text=True, **kw)
+
+
+def pgrep(name):
+    return run(["pgrep", "-x", name]).returncode == 0
+
+
+def hooks(parts, slug):
+    done = []
+    if "terminal" in parts:
+        os.utime(WEZTERM_CONF)  # wezterm watches its config file → reload
+        done.append("wezterm (auto-reload)")
+    if "bar" in parts and IS_MAC and pgrep("sketchybar"):
+        run(["sketchybar", "--reload"])
+        done.append("sketchybar")
+    if "borders" in parts and IS_MAC and pgrep("borders"):
+        env = {}
+        with open(os.path.join(GENERATED, slug, "borders.sh")) as f:
+            for line in f:
+                if line.startswith("export "):
+                    k, _, val = line[7:].strip().partition("=")
+                    env[k] = val
+        run(["borders",
+             f"active_color={env['BORDER_ACTIVE']}",
+             f"inactive_color={env['BORDER_INACTIVE']}",
+             f"width={env['BORDER_WIDTH']}"])
+        done.append("borders")
+    if "wallpaper" in parts and IS_MAC:
+        wp = os.path.join(GENERATED, slug, "wallpaper.png")
+        r = run(["osascript", "-e",
+                 f'tell application "System Events" to set picture of every desktop to "{wp}"'])
+        done.append("wallpaper" if r.returncode == 0 else "wallpaper (failed)")
+    if "tools" in parts:
+        done.append("btop/lazygit/fzf (au prochain lancement)")
+    return done
+
+
+# ── commands ─────────────────────────────────────────────────────────────────
+
+def cmd_generate(args):
+    targets = slugs() if (not args or args[0] == "--all") else [args[0]]
+    for s in targets:
+        generate(s)
+        print(f"generated {s}")
+
+
+def cmd_set(args):
+    if not args:
+        sys.exit("usage: theme set <slug> [--only part,part]")
+    slug = args[0]
+    only = None
+    if "--only" in args:
+        only = args[args.index("--only") + 1].split(",")
+        for p in only:
+            if p not in PARTS:
+                sys.exit(f"theme: unknown part '{p}' (parts: {', '.join(PARTS)})")
+    load(slug)  # validate
+    if not os.path.isdir(os.path.join(GENERATED, slug)):
+        generate(slug)
+    parts = only or list(PARTS)
+    files = [f for p in parts for f in PARTS[p]]
+    if only is None:
+        files.append("theme.toml")
+    point(slug, files)
+    done = hooks(parts, slug)
+    scope = f" ({', '.join(parts)})" if only else ""
+    print(f"→ {load(slug)['name']}{scope}")
+    for d in done:
+        print(f"  reloaded: {d}")
+
+
+def cmd_toggle(_args):
+    cur = current_slug()
+    if cur is None:
+        sys.exit("theme: no current theme (run `theme set <slug>` first)")
+    twin = load(cur).get("twin")
+    if twin is None:
+        sys.exit(f"theme: '{cur}' has no light/dark twin")
+    cmd_set([twin])
+
+
+def cmd_list(_args):
+    cur = current_slug()
+    for s in slugs():
+        pal = load(s)
+        mark = "●" if s == cur else " "
+        mode = pal.get("mode", "dark")
+        twin = f"  ⇄ {pal['twin']}" if pal.get("twin") else ""
+        print(f"{mark} {s:20s} {pal['name']:20s} {mode}{twin}")
+
+
+def cmd_status(_args):
+    for part, files in PARTS.items():
+        s = current_slug(files[0])
+        print(f"{part:10s} {s or '—'}")
+
+
+def cmd_preview(args):
+    if not args:
+        return
+    pal = load(args[0])
+    v = variables(args[0], pal)
+    def block(hx, w=6):
+        r, g, b = rgb(hx)
+        return f"\x1b[48;2;{r};{g};{b}m{' ' * w}\x1b[0m"
+    print(f"\x1b[1m{pal['name']}\x1b[0m  ({pal.get('mode','dark')})")
+    print()
+    print("  " + "".join(block(v[k]) for k in
+          ["red", "orange", "yellow", "green", "cyan", "accent", "magenta"]))
+    print("  " + "".join(block(v[k]) for k in ["wall", "wall2", "term", "sel", "dim", "fg"]))
+    print()
+    for k in ["term", "fg", "accent", "red", "green", "yellow", "magenta", "cyan"]:
+        print(f"  {block(v[k], 3)} {k:8s} {v[k]}")
+    if pal.get("twin"):
+        print(f"\n  twin: {pal['twin']}")
+
+
+def cmd_menu(_args):
+    lines = []
+    cur = current_slug()
+    for s in slugs():
+        pal = load(s)
+        mark = "●" if s == cur else " "
+        lines.append(f"{s}\t{mark} {pal['name']}")
+    fzf = subprocess.run(
+        ["fzf", "--delimiter", "\t", "--with-nth", "2",
+         "--prompt", "theme ❯ ", "--height", "60%", "--layout", "reverse",
+         "--border", "--ansi",
+         "--preview", f"'{SCRIPT}' preview {{1}}",
+         "--preview-window", "right,40%"],
+        input="\n".join(lines), capture_output=True, text=True)
+    if fzf.returncode == 0 and fzf.stdout.strip():
+        cmd_set([fzf.stdout.split("\t")[0].strip()])
+
+
+def main():
+    args = sys.argv[1:]
+    if not args:
+        cmd_menu([])
+        return
+    cmds = {"list": cmd_list, "set": cmd_set, "toggle": cmd_toggle,
+            "generate": cmd_generate, "status": cmd_status,
+            "preview": cmd_preview, "menu": cmd_menu}
+    if args[0] in ("-h", "--help", "help"):
+        print(__doc__.strip())
+        return
+    fn = cmds.get(args[0])
+    if fn is None:
+        sys.exit(f"theme: unknown command '{args[0]}' (see `theme --help`)")
+    fn(args[1:])
+
+
+if __name__ == "__main__":
+    main()

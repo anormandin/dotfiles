@@ -1,0 +1,49 @@
+#!/bin/bash
+# SketchyBar — colors come from ~/.config/theme-current (managed by `theme`)
+source "$HOME/.config/theme-current/sketchybar-colors.sh"
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+
+sketchybar --bar \
+  position=top height=32 margin=10 y_offset=8 corner_radius=9 \
+  blur_radius=30 color=$BAR_COLOR border_width=1 border_color=$BAR_BORDER_COLOR
+
+sketchybar --default \
+  icon.font="Hack Nerd Font:Bold:14.0" icon.color=$ICON_COLOR \
+  label.font="Hack Nerd Font:Semibold:13.0" label.color=$LABEL_COLOR \
+  padding_left=6 padding_right=6 icon.padding_right=4
+
+# Apple logo
+sketchybar --add item apple left \
+  --set apple icon= icon.color=$ACCENT_COLOR label.drawing=off padding_left=8
+
+# AeroSpace workspaces (aerospace triggers this event on workspace change)
+sketchybar --add event aerospace_workspace_change
+for sid in 1 2 3 4 5; do
+  sketchybar --add item space.$sid left \
+    --subscribe space.$sid aerospace_workspace_change \
+    --set space.$sid label=$sid icon.drawing=off \
+      label.padding_left=8 label.padding_right=8 \
+      background.corner_radius=5 background.height=20 \
+      click_script="aerospace workspace $sid" \
+      script="$PLUGIN_DIR/aerospace.sh $sid"
+done
+
+# Front application
+sketchybar --add item front_app left \
+  --subscribe front_app front_app_switched \
+  --set front_app icon.drawing=off label.color=$DIM_COLOR \
+    script="$PLUGIN_DIR/front_app.sh"
+
+# Right side: clock · battery · volume · cpu
+sketchybar --add item clock right \
+  --set clock update_freq=10 icon.drawing=off script="$PLUGIN_DIR/clock.sh"
+sketchybar --add item battery right \
+  --subscribe battery system_woke power_source_change \
+  --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh"
+sketchybar --add item volume right \
+  --subscribe volume volume_change \
+  --set volume script="$PLUGIN_DIR/volume.sh"
+sketchybar --add item cpu right \
+  --set cpu update_freq=4 icon=󰻠 icon.color=$ACCENT_COLOR script="$PLUGIN_DIR/cpu.sh"
+
+sketchybar --update

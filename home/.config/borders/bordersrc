@@ -1,0 +1,9 @@
+#!/bin/bash
+# JankyBorders — colors come from ~/.config/theme-current (managed by `theme`)
+source "$HOME/.config/theme-current/borders.sh"
+borders \
+  style=round \
+  width="$BORDER_WIDTH" \
+  active_color="$BORDER_ACTIVE" \
+  inactive_color="$BORDER_INACTIVE" \
+  hidpi=on

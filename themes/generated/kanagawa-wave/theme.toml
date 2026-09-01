@@ -1,0 +1,23 @@
+name = "Kanagawa Wave"
+mode = "dark"
+twin = "kanagawa-lotus"
+
+[colors]
+wall = "#16161d"
+wall2 = "#1f1f28"
+bar = "#1f1f28"
+term = "#1f1f28"
+fg = "#dcd7ba"
+dim = "#727169"
+accent = "#7e9cd8"
+red = "#ff5d62"
+orange = "#ffa066"
+yellow = "#e6c384"
+green = "#98bb6c"
+cyan = "#7aa89f"
+magenta = "#957fb8"
+sel = "#2d4f67"
+
+[ansi]
+normal = ["#090618", "#c34043", "#76946a", "#c0a36e", "#7e9cd8", "#957fb8", "#6a9589", "#c8c093"]
+bright = ["#727169", "#e82424", "#98bb6c", "#e6c384", "#7fb4ca", "#938aa9", "#7aa89f", "#dcd7ba"]

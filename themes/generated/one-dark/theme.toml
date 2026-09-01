@@ -1,0 +1,18 @@
+name = "One Dark"
+mode = "dark"
+
+[colors]
+wall = "#21252b"
+wall2 = "#282c34"
+bar = "#282c34"
+term = "#282c34"
+fg = "#abb2bf"
+dim = "#5c6370"
+accent = "#61afef"
+red = "#e06c75"
+orange = "#d19a66"
+yellow = "#e5c07b"
+green = "#98c379"
+cyan = "#56b6c2"
+magenta = "#c678dd"
+sel = "#3e4451"

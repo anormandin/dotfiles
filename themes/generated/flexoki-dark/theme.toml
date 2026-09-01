@@ -1,0 +1,18 @@
+name = "Flexoki Dark"
+mode = "dark"
+
+[colors]
+wall = "#100f0f"
+wall2 = "#1c1b1a"
+bar = "#1c1b1a"
+term = "#100f0f"
+fg = "#cecdc3"
+dim = "#878580"
+accent = "#4385be"
+red = "#d14d41"
+orange = "#da702c"
+yellow = "#d0a215"
+green = "#879a39"
+cyan = "#3aa99f"
+magenta = "#ce5d97"
+sel = "#282726"

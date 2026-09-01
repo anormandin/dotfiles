@@ -1,0 +1,18 @@
+name = "Everforest Dark"
+mode = "dark"
+
+[colors]
+wall = "#232a2e"
+wall2 = "#2d353b"
+bar = "#2d353b"
+term = "#2d353b"
+fg = "#d3c6aa"
+dim = "#859289"
+accent = "#7fbbb3"
+red = "#e67e80"
+orange = "#e69875"
+yellow = "#dbbc7f"
+green = "#a7c080"
+cyan = "#83c092"
+magenta = "#d699b6"
+sel = "#343f44"

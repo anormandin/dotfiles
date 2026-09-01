@@ -1,0 +1,18 @@
+name = "Tokyo Night"
+mode = "dark"
+
+[colors]
+wall = "#16161e"
+wall2 = "#1a1b26"
+bar = "#1a1b26"
+term = "#1a1b26"
+fg = "#c0caf5"
+dim = "#565f89"
+accent = "#7aa2f7"
+red = "#f7768e"
+orange = "#ff9e64"
+yellow = "#e0af68"
+green = "#9ece6a"
+cyan = "#7dcfff"
+magenta = "#bb9af7"
+sel = "#283457"

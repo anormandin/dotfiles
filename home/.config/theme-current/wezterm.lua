@@ -1,0 +1,1 @@
+../../../themes/generated/oxocarbon/wezterm.lua

@@ -1,0 +1,18 @@
+name = "Ayu Mirage"
+mode = "dark"
+
+[colors]
+wall = "#171b24"
+wall2 = "#1f2430"
+bar = "#1f2430"
+term = "#1f2430"
+fg = "#cbccc6"
+dim = "#707a8c"
+accent = "#ffad66"
+red = "#f28779"
+orange = "#ffad66"
+yellow = "#ffd173"
+green = "#bae67e"
+cyan = "#95e6cb"
+magenta = "#d4bfff"
+sel = "#232834"
