@@ -36,3 +36,6 @@ home/.config/doom/auto-save-list/
 home/.config/doom/transient/
 home/.config/doom/*~
 home/.config/doom/\#*\#
+
+# --- ranger: devicons plugin is its own git clone (reinstallable) + pycache ---
+home/.config/ranger/plugins/
