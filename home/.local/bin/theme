@@ -192,7 +192,12 @@ def pgrep(name):
 def hooks(parts, slug):
     done = []
     if "terminal" in parts:
-        os.utime(WEZTERM_CONF)  # wezterm watches its config file → reload
+        # Rewrite the config in place: wezterm's watcher needs a real write
+        # event (a bare utime/touch doesn't trigger the reload).
+        with open(WEZTERM_CONF) as f:
+            conf = f.read()
+        with open(WEZTERM_CONF, "w") as f:
+            f.write(conf)
         done.append("wezterm (auto-reload)")
     if "bar" in parts and IS_MAC and pgrep("sketchybar"):
         run(["sketchybar", "--reload"])

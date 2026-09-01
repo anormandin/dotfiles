@@ -1,1 +1,1 @@
-../../../themes/generated/oxocarbon/sketchybar-colors.sh
+../../../themes/generated/kanagawa-wave/sketchybar-colors.sh

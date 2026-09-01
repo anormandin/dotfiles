@@ -11,7 +11,13 @@ if not ok then
 	theme = require("colors.kanagawa")
 	theme.gradient = { "#363646", "#1f1f28", "#16161d" }
 end
+-- Watch the REAL paths inside the stow repo: the ~/.config ones are symlinks,
+-- and macOS file events don't fire across them (`theme set` repoints the
+-- theme-current/wezterm.lua symlink, which is a dir-entry change in the repo).
 wezterm.add_to_config_reload_watch_list(theme_file)
+wezterm.add_to_config_reload_watch_list(wezterm.home_dir .. "/dotfiles/home/.config/theme-current")
+wezterm.add_to_config_reload_watch_list(wezterm.home_dir .. "/dotfiles/home/.config/theme-current/wezterm.lua")
+wezterm.add_to_config_reload_watch_list(wezterm.home_dir .. "/dotfiles/home/.config/wezterm/wezterm.lua")
 config.color_schemes = { ["Theme"] = theme.colors }
 config.color_scheme = "Theme"
 config.force_reverse_video_cursor = theme.force_reverse_video_cursor

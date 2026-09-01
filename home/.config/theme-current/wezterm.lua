@@ -1,1 +1,1 @@
-../../../themes/generated/oxocarbon/wezterm.lua
+../../../themes/generated/kanagawa-wave/wezterm.lua

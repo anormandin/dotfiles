@@ -3,9 +3,11 @@
 source "$HOME/.config/theme-current/sketchybar-colors.sh"
 PLUGIN_DIR="$CONFIG_DIR/plugins"
 
+# Flush bar: slots into the notch strip on the MacBook, slim bar on externals
 sketchybar --bar \
-  position=top height=32 margin=10 y_offset=8 corner_radius=9 \
-  blur_radius=30 color=$BAR_COLOR border_width=1 border_color=$BAR_BORDER_COLOR
+  position=top height=36 margin=0 y_offset=0 corner_radius=0 \
+  padding_left=10 padding_right=10 \
+  blur_radius=30 color=$BAR_COLOR
 
 sketchybar --default \
   icon.font="Hack Nerd Font:Bold:14.0" icon.color=$ICON_COLOR \
@@ -18,7 +20,7 @@ sketchybar --add item apple left \
 
 # AeroSpace workspaces (aerospace triggers this event on workspace change)
 sketchybar --add event aerospace_workspace_change
-for sid in 1 2 3 4 5; do
+for sid in 1 2 3 4 5 6 7 8 9 10; do
   sketchybar --add item space.$sid left \
     --subscribe space.$sid aerospace_workspace_change \
     --set space.$sid label=$sid icon.drawing=off \
