@@ -1,1 +1,1 @@
-../../../themes/generated/kanagawa-wave/borders.sh
+../../../themes/generated/oxocarbon/borders.sh

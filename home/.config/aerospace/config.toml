@@ -19,6 +19,28 @@ accordion-padding = 30
 default-root-container-layout = 'tiles'
 default-root-container-orientation = 'auto'
 
+# Windows that should float, not tile: file pickers and other dialog-shaped
+# windows (Catalyst/Electron apps open them as separate windows), and utility
+# apps. Escape hatch for anything else: alt-shift-f toggles floating.
+[[on-window-detected]]
+if.window-title-regex-substring = '^(Open|Save|Choose|Select|Export|Import|Ouvrir|Enregistrer|Sélectionner|Exporter|Importer)\b'
+run = 'layout floating'
+
+# Note: Catalyst apps (WhatsApp, Messages…) render their file-picker sheets
+# broken when tiled — hit alt-shift-f to float them for the picker, and again
+# to re-tile. Floating them permanently here was tried and rejected.
+[[on-window-detected]]
+if.app-id = 'com.apple.systempreferences'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.ActivityMonitor'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.calculator'
+run = 'layout floating'
+
 # Gaps. outer.top is per-monitor: the built-in screen's notch strip already
 # reserves the bar's row, externals need room for the 36px bar + breathing space.
 [gaps]

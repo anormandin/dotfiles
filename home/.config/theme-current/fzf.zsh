@@ -1,1 +1,1 @@
-../../../themes/generated/kanagawa-wave/fzf.zsh
+../../../themes/generated/oxocarbon/fzf.zsh
