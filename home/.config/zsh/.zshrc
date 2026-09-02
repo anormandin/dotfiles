@@ -146,5 +146,8 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # Claude Code LSP support
 # export ENABLE_LSP_TOOL=1
 
+# Secrets locaux hors dotfiles (clé MCP House OS, etc.) — fichier absent = rien ne casse
+[ -f "$HOME/.config/secrets.zsh" ] && source "$HOME/.config/secrets.zsh"
+
 
 

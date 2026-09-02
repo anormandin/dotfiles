@@ -59,3 +59,8 @@ alias stow-on='stow -v -t ~ -d ~/dotfiles home'      # create/refresh symlinks
 alias stow-off='stow -D -v -t ~ -d ~/dotfiles home'  # remove symlinks
 alias restow='stow -R -v -t ~ -d ~/dotfiles home'    # re-stow (picks up newly added files)
 alias stow-dry='stow -n -v -t ~ -d ~/dotfiles home'  # preview, change nothing
+
+# --- House OS ---
+# Le MCP de Claude Code vise la prod par défaut (~/.config/secrets.zsh) ;
+# claude-dev force l'API locale (localhost:5000, clé dev).
+alias claude-dev='HOUSEOS_MCP_URL="http://localhost:5000/mcp" HOUSEOS_MCP_KEY="dev-cle-mcp-houseos" claude'
