@@ -1,0 +1,64 @@
+{
+  "alfredtheme" : {
+    "name" : "Ayu Mirage (rice)",
+    "credit" : "theme CLI (dotfiles)",
+    "window" : {
+      "color" : "#1f2430FF",
+      "roundness" : 12,
+      "paddingHorizontal" : 10,
+      "paddingVertical" : 10,
+      "borderPadding" : 0,
+      "borderColor" : "#ffad6666",
+      "blur" : 0,
+      "width" : 640
+    },
+    "search" : {
+      "background" : "#171b24FF",
+      "backgroundSelected" : "#232834FF",
+      "roundness" : 8,
+      "paddingHorizontal" : 12,
+      "paddingVertical" : 8,
+      "spacing" : 10,
+      "text" : {
+        "font" : "Maple Mono NF",
+        "size" : 26,
+        "color" : "#cbccc6FF",
+        "colorSelected" : "#cbccc6FF"
+      }
+    },
+    "result" : {
+      "backgroundSelected" : "#232834FF",
+      "roundness" : 8,
+      "paddingVertical" : 9,
+      "iconSize" : 36,
+      "iconPaddingHorizontal" : 6,
+      "textSpacing" : 8,
+      "text" : {
+        "font" : "Maple Mono NF",
+        "size" : 17,
+        "color" : "#cbccc6FF",
+        "colorSelected" : "#cbccc6FF"
+      },
+      "subtext" : {
+        "font" : "Maple Mono NF",
+        "size" : 11,
+        "color" : "#707a8cFF",
+        "colorSelected" : "#707a8cFF"
+      },
+      "shortcut" : {
+        "font" : "Maple Mono NF",
+        "size" : 14,
+        "color" : "#707a8cFF",
+        "colorSelected" : "#ffad66FF"
+      }
+    },
+    "separator" : {
+      "color" : "#707a8c33",
+      "thickness" : 1
+    },
+    "scrollbar" : {
+      "color" : "#ffad6699",
+      "thickness" : 2
+    }
+  }
+}

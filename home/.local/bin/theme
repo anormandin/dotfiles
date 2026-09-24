@@ -17,7 +17,7 @@ Usage:
   theme preview <slug>       print palette swatches (used by the fzf menu)
 
 Parts: terminal (wezterm) · bar (sketchybar) · borders (JankyBorders)
-       tools (btop, lazygit, fzf) · wallpaper
+       tools (btop, lazygit, fzf) · wallpaper · launcher (Alfred)
 """
 
 import os
@@ -46,6 +46,7 @@ PARTS = {
     "borders": ["borders.sh"],
     "tools": ["btop.theme", "lazygit.yml", "fzf.zsh"],
     "wallpaper": ["wallpaper.png"],
+    "launcher": ["alfred.json"],
 }
 TEMPLATE_FILES = {
     "wezterm.lua": "wezterm.lua.tmpl",
@@ -54,7 +55,10 @@ TEMPLATE_FILES = {
     "btop.theme": "btop.theme.tmpl",
     "lazygit.yml": "lazygit.yml.tmpl",
     "fzf.zsh": "fzf.zsh.tmpl",
+    "alfred.json": "alfred.json.tmpl",
 }
+ALFRED_THEMES = os.path.expanduser(
+    "~/Library/Application Support/Alfred/Alfred.alfredpreferences/themes")
 IS_MAC = sys.platform == "darwin"
 
 
@@ -220,6 +224,26 @@ def hooks(parts, slug):
         r = run(["osascript", "-e",
                  f'tell application "System Events" to set picture of every desktop to "{wp}"'])
         done.append("wallpaper" if r.returncode == 0 else "wallpaper (failed)")
+    if "launcher" in parts and IS_MAC and os.path.isdir(ALFRED_THEMES):
+        # Install (or refresh) the generated theme in Alfred's themes dir,
+        # then switch by name — Alfred's AppleScript API has no reload verb.
+        dst = os.path.join(ALFRED_THEMES, f"theme.custom.rice.{slug}")
+        os.makedirs(dst, exist_ok=True)
+        with open(os.path.join(GENERATED, slug, "alfred.json")) as f:
+            body = f.read()
+        with open(os.path.join(dst, "theme.json"), "w") as f:
+            f.write(body)
+        name = load(slug)["name"]
+        try:
+            # First run from a given app blocks on the macOS Automation
+            # consent dialog ("… wants to control Alfred") — never hang on it.
+            r = run(["osascript", "-e",
+                     f'tell application id "com.runningwithcrayons.Alfred" '
+                     f'to set theme "{name} (rice)"'], timeout=5)
+            done.append("alfred" if r.returncode == 0 else "alfred (failed)")
+        except subprocess.TimeoutExpired:
+            done.append("alfred (waiting on Automation consent — allow "
+                        "controlling Alfred, then rerun)")
     if "tools" in parts:
         done.append("btop/lazygit/fzf (au prochain lancement)")
     return done

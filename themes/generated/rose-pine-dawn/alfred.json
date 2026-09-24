@@ -1,0 +1,64 @@
+{
+  "alfredtheme" : {
+    "name" : "Rosé Pine Dawn (rice)",
+    "credit" : "theme CLI (dotfiles)",
+    "window" : {
+      "color" : "#faf4edFF",
+      "roundness" : 12,
+      "paddingHorizontal" : 10,
+      "paddingVertical" : 10,
+      "borderPadding" : 0,
+      "borderColor" : "#907aa966",
+      "blur" : 0,
+      "width" : 640
+    },
+    "search" : {
+      "background" : "#f2e9e1FF",
+      "backgroundSelected" : "#dfdad9FF",
+      "roundness" : 8,
+      "paddingHorizontal" : 12,
+      "paddingVertical" : 8,
+      "spacing" : 10,
+      "text" : {
+        "font" : "Maple Mono NF",
+        "size" : 26,
+        "color" : "#575279FF",
+        "colorSelected" : "#575279FF"
+      }
+    },
+    "result" : {
+      "backgroundSelected" : "#dfdad9FF",
+      "roundness" : 8,
+      "paddingVertical" : 9,
+      "iconSize" : 36,
+      "iconPaddingHorizontal" : 6,
+      "textSpacing" : 8,
+      "text" : {
+        "font" : "Maple Mono NF",
+        "size" : 17,
+        "color" : "#575279FF",
+        "colorSelected" : "#575279FF"
+      },
+      "subtext" : {
+        "font" : "Maple Mono NF",
+        "size" : 11,
+        "color" : "#9893a5FF",
+        "colorSelected" : "#9893a5FF"
+      },
+      "shortcut" : {
+        "font" : "Maple Mono NF",
+        "size" : 14,
+        "color" : "#9893a5FF",
+        "colorSelected" : "#907aa9FF"
+      }
+    },
+    "separator" : {
+      "color" : "#9893a533",
+      "thickness" : 1
+    },
+    "scrollbar" : {
+      "color" : "#907aa999",
+      "thickness" : 2
+    }
+  }
+}
