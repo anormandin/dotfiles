@@ -1,1 +1,1 @@
-../../../themes/generated/oxocarbon/wezterm.lua
+../../../themes/generated/catppuccin-mocha/wezterm.lua

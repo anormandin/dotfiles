@@ -1,1 +1,1 @@
-../../../themes/generated/oxocarbon/fzf.zsh
+../../../themes/generated/catppuccin-mocha/fzf.zsh

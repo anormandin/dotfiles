@@ -1,1 +1,1 @@
-../../../themes/generated/oxocarbon/sketchybar-colors.sh
+../../../themes/generated/catppuccin-mocha/sketchybar-colors.sh
