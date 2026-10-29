@@ -3,6 +3,13 @@
   "lines": [
     [
       {
+        "id": "worktree-badge",
+        "type": "custom-command",
+        "commandPath": "~/.claude/statusline-worktree.sh",
+        "preserveColors": true,
+        "timeout": 500
+      },
+      {
         "id": "e705c823-a517-4363-8674-d15dbd3bfc7e",
         "type": "model"
       },
