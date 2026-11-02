@@ -84,6 +84,11 @@ config.tab_max_width = 32
 -- Performance / rendering
 config.front_end = "WebGpu"
 config.webgpu_power_preference = "HighPerformance"
+if is_windows then
+	-- WebGpu on Windows doesn't resize its surface with the window (the old
+	-- terminal area stays drawn in a corner over the background); OpenGL does.
+	config.front_end = "OpenGL"
+end
 config.max_fps = 120
 config.animation_fps = 60
 
