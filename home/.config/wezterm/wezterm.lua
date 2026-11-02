@@ -2,10 +2,26 @@ local wezterm = require("wezterm")
 local act = wezterm.action
 local config = wezterm.config_builder()
 local is_macos = wezterm.target_triple:find("darwin")
+local is_windows = wezterm.target_triple:find("windows")
 
 -- Color scheme: current theme from ~/.config/theme-current (managed by the
 -- `theme` CLI), falling back to the vendored Kanagawa if no theme is set.
 local theme_file = wezterm.home_dir .. "/.config/theme-current/wezterm.lua"
+if is_windows then
+	-- No stow on Windows: read the theme straight from the repo. Git checks the
+	-- theme-current symlink out as a one-line text file holding its target
+	-- (core.symlinks=false), so follow it by hand.
+	local theme_dir = wezterm.home_dir .. "/dotfiles/home/.config/theme-current"
+	theme_file = theme_dir .. "/wezterm.lua"
+	local stub = io.open(theme_file)
+	if stub then
+		local target = stub:read("*l")
+		stub:close()
+		if target and target:match("^[%w%._/-]+%.lua$") then
+			theme_file = theme_dir .. "/" .. target
+		end
+	end
+end
 local ok, theme = pcall(dofile, theme_file)
 if not ok then
 	theme = require("colors.kanagawa")
@@ -77,29 +93,61 @@ config.audible_bell = "Disabled"
 -- Scrollback
 config.scrollback_lines = 10000
 
+-- Modifiers: Cmd on macOS. On Windows the Win key is taken by the OS
+-- (Win+V clipboard history, Win+K cast, ...), so use Ctrl+Shift instead,
+-- and plain Ctrl for font size (Ctrl+Shift+= types "+").
+local mod = "SUPER"
+local mod_shift = "SUPER|SHIFT"
+local size_mod = "SUPER"
+-- Edit config in nvim; on Windows nvim lives in WSL, so open it there.
+local edit_config = act.SpawnCommandInNewTab({
+	cwd = wezterm.home_dir,
+	args = { "nvim", wezterm.config_file },
+})
+if is_windows then
+	mod = "CTRL|SHIFT"
+	mod_shift = "CTRL|SHIFT"
+	size_mod = "CTRL"
+	local wsl_config_path = wezterm.config_file:gsub("\\", "/"):gsub("^(%a):", function(drive)
+		return "/mnt/" .. drive:lower()
+	end)
+	edit_config = act.SpawnCommandInNewTab({
+		domain = { DomainName = "WSL:Ubuntu" },
+		args = { "nvim", wsl_config_path },
+	})
+
+	-- Shell: Windows PowerShell by default, Ubuntu (WSL) one key away.
+	config.default_prog = { "powershell.exe", "-NoLogo" }
+	config.launch_menu = {
+		{ label = "PowerShell", args = { "powershell.exe", "-NoLogo" } },
+		{ label = "Ubuntu (WSL)", domain = { DomainName = "WSL:Ubuntu" } },
+	}
+end
+
 config.keys = {
 	-- Shift+Enter sends Esc+Enter (useful for vi mode in shells/REPLs)
 	{ key = "Enter", mods = "SHIFT", action = act.SendString("\x1b\r") },
-	-- Edit config
-	{
-		key = ",",
-		mods = "SUPER",
-		action = act.SpawnCommandInNewTab({
-			cwd = wezterm.home_dir,
-			args = { "nvim", wezterm.config_file },
-		}),
-	},
-	{ key = "r", mods = "SUPER|SHIFT", action = act.ReloadConfiguration },
-	{ key = "k", mods = "SUPER", action = act.ClearScrollback("ScrollbackAndViewport") },
-	{ key = "Enter", mods = "SUPER", action = act.ToggleFullScreen },
+	{ key = ",", mods = mod, action = edit_config },
+	{ key = "r", mods = mod_shift, action = act.ReloadConfiguration },
+	{ key = "k", mods = mod, action = act.ClearScrollback("ScrollbackAndViewport") },
+	{ key = "Enter", mods = mod, action = act.ToggleFullScreen },
 	-- Font size
-	{ key = "=", mods = "SUPER", action = act.IncreaseFontSize },
-	{ key = "-", mods = "SUPER", action = act.DecreaseFontSize },
-	{ key = "0", mods = "SUPER", action = act.ResetFontSize },
+	{ key = "=", mods = size_mod, action = act.IncreaseFontSize },
+	{ key = "-", mods = size_mod, action = act.DecreaseFontSize },
+	{ key = "0", mods = size_mod, action = act.ResetFontSize },
 	-- Copy / paste
-	{ key = "c", mods = "SUPER", action = act.CopyTo("Clipboard") },
-	{ key = "v", mods = "SUPER", action = act.PasteFrom("Clipboard") },
+	{ key = "c", mods = mod, action = act.CopyTo("Clipboard") },
+	{ key = "v", mods = mod, action = act.PasteFrom("Clipboard") },
 }
+if is_windows then
+	-- New tab in Ubuntu (WSL); Ctrl+Shift+T stays PowerShell.
+	table.insert(config.keys, {
+		key = "u",
+		mods = "CTRL|SHIFT",
+		action = act.SpawnCommandInNewTab({ domain = { DomainName = "WSL:Ubuntu" } }),
+	})
+	table.insert(config.keys, { key = "l", mods = "ALT", action = act.ShowLauncher })
+end
 
 config.mouse_bindings = {
 	{
@@ -109,7 +157,7 @@ config.mouse_bindings = {
 	},
 	{
 		event = { Up = { streak = 1, button = "Left" } },
-		mods = "SUPER",
+		mods = is_windows and "CTRL" or "SUPER",
 		action = act.OpenLinkAtMouseCursor,
 	},
 }
